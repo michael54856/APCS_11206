@@ -3,7 +3,7 @@
 這邊用0,1,2,3來分別代表上、下、左、右<br>
 面朝某一個方向時都有4種的移動方式(上、下、左、右)<br>
 所以總共要做出16個判斷<br>
-![方向說明](https://github.com/michael54856/APCS_11206/blob/main/image/directionDiscription.jpg)
+<img src="https://github.com/michael54856/APCS_11206/blob/main/image/directionDiscription.jpg" width="50%" />
 
 ##  2. 特殊位置 
 ##  3. 磁軌移動序列 
