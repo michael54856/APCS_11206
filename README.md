@@ -131,5 +131,112 @@ int main()
 ```
 
 ##  2. 特殊位置 
+檢查每一個點是否都是特殊位置<br>
+比較好的做法應該是用BFS和其他技巧，但考試不考慮複雜度，用最暴力的方法即可<br>
+我們會先選出某一個點，再看距離這個點曼哈頓距離為X內的所有格子<br>
+但直接找出這些點需要用到BFS，因此我們不會直接找這些點<br>
+我們會框出他的範圍，再去檢查這個範圍內的各個點，曼哈頓距離是否在X內<br>
+都符合條件才會加到總和中<br>
+另一個要注意的點是，因為我們一開始要先輸出特殊位置有幾個<br>
+因此得到的答案要先存起來，最後再輸出<br>
+
+藍色是陣列範圍，紅色是對於這一格所要檢查的範圍<br>
+<img src="https://github.com/michael54856/APCS_11206/blob/main/image/grid_description1.png"/>
+
+有可能我們要看的範圍是超出陣列範圍的，因此要把看的界線強行更改到陣列範圍內<br>
+<img src="https://github.com/michael54856/APCS_11206/blob/main/image/grid_description2.png"/>
+
+```
+#include <iostream>
+using namespace std;
+
+bool check(int a[50][50], int y, int x, int m, int n)
+{
+	//定義左上角的座標與右下角的座標
+    int startY = y - a[y][x];
+    int startX = x - a[y][x];
+    int endY = y + a[y][x];
+    int endX = x + a[y][x];
+
+	//進行正規化，避免超出陣列範圍
+    if(startY < 0)
+    {
+        startY = 0;
+    }
+    if(startX < 0)
+    {
+        startX = 0;
+    }
+    if(endY >= m)
+    {
+        endY = m-1;
+    }
+    if(endX >= n)
+    {
+        endX = n-1;
+    }
+
+    int sum = 0;
+
+    for(int i = startY; i <= endY; i++)
+    {
+        for(int j = startX; j <= endX; j++)
+        {
+            if(abs(i-y) + abs(j-x) <= a[y][x]) //檢查曼哈頓距離
+            {
+                sum += a[i][j];
+            }
+        }
+    }
+
+    if(sum % 10 == a[y][x])
+    {
+        return true;
+    }
+    return false;
+
+}
+
+
+int main()
+{
+    int a[50][50];
+    int m,n;
+    cin >> m >> n;
+    for(int i = 0; i < m; i++)
+    {
+        for(int j = 0; j < n; j++)
+        {
+            cin >> a[i][j];
+        }
+    }
+
+    int ans[2500][2];
+    int ansCount = 0;
+
+    for(int i = 0; i < m; i++)
+    {
+        for(int j = 0; j < n; j++)
+        {
+            if(check(a,i,j,m,n) == true) //符合就存下來
+            {
+                ans[ansCount][0] = i;
+                ans[ansCount][1] = j;
+                ansCount++;
+            }
+        }
+    }
+	
+	//輸出
+    cout << ansCount << endl;
+    for(int i = 0; i < ansCount; i++)
+    {
+        cout << ans[i][0] << " " << ans[i][1] << endl;
+    }
+}
+```
+
 ##  3. 磁軌移動序列 
+
 ##  4. 開啟寶盒 
+待補充.......
