@@ -238,5 +238,100 @@ int main()
 
 ##  3. 磁軌移動序列 
 
+這題使用遞迴的方式來解，這邊所有的變數都是共用的，除了head,tail是每層一個<br>
+遇到T的話比較簡單，只要串上去就好，這邊我們需要head跟tail，如果head = -1，代表這是第一個數字<br>
+遇到L就繼續進行遞迴，遞迴結束之後，我們可以得到下一段的cost是多少，也能知道其head與tail<br>
+所以我們就能夠計算出cost = (下一段的cost x 有幾次) + (loop之間的串接) + (目前的tail串到下一段head的cost) <br>
+只是要小心可能會有沒有head的狀況，就會少(目前的tail串到下一段head的cost)這一個<br>
+直接看下面的code可能比較好理解<br>
+
+```cpp
+#include <iostream>
+using namespace std;
+
+long long int calculateCost(string &s, int &i, int &head, int &tail, int &len) //這邊s,i,len是共用參數，head,tail每層不同
+{
+    long long int cost = 0;
+    for( ; i < len; )
+    {
+        if(s[i] == 'T')
+        {
+            int num = ((s[i+1]-'0')*10) + (s[i+2]-'0'); //計算數字
+            i += 3; //移動指標
+            if(head == -1) //檢查是否有頭，沒有頭的話不用加cost
+            {
+                head = num;
+                tail = num;
+            }
+            else  //有頭的話就要加cost
+            {
+                cost += abs(tail-num);
+                tail = num;
+            }
+        }
+        else if(s[i] == 'L')
+        {
+            int times = (s[i+1]-'0'); //看次數
+            i+=2;  //移動指標
+            int nexthead = -1;
+            int nextTail = -1;
+            long long int recursionCost = calculateCost(s, i, nexthead, nextTail,len);  //繼續做遞迴，會回傳下一段遞迴的cost與頭跟尾分別是多少
+
+            if(recursionCost == 0) //代表只有一個數字
+            {
+                if(head == -1) //沒有頭，不用加cost
+                {
+                    head = nexthead;
+                    tail = nextTail;
+                }
+                else //有頭，需要加cost
+                {
+                    cost += abs(tail-nexthead);
+                    tail = nextTail;
+                }
+            }
+            else  //有cost需要計算
+            {
+                if(head == -1)
+                {
+                    cost += recursionCost*times;                  //計算中間那段重複的cost
+                    cost += abs(nextTail-nexthead) * (times-1);   //計算遞迴中間進行連接的cost
+                    head = nexthead;
+                    tail = nextTail;
+                }
+                else
+                {
+                    cost += recursionCost*times;                 //計算中間那段重複的cost
+                    cost += abs(nextTail-nexthead) * (times-1);  //計算遞迴中間進行連接的cost
+                    cost += abs(tail-nexthead);                  //計算這個頭連接到下一段的cost
+                    tail = nextTail;
+                }
+
+            }
+
+        }
+        else if(s[i] == 'E')
+        {
+            i++;
+            return cost;
+        }
+
+    }
+    return cost;
+}
+
+int main ()
+{
+    string s;
+    cin >> s;
+    int len = s.length();
+    int i = 0;
+    int head = 10;
+    int tail = 10;
+    long long int ans = calculateCost(s, i, head, tail,len);
+    cout << ans;
+
+}
+```
 ##  4. 開啟寶盒 
 待補充.......
