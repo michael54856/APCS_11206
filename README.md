@@ -6,13 +6,8 @@
 <img src="https://github.com/michael54856/APCS_11206/blob/main/image/directionDiscription.jpg" width="50%" />
 <br>
 
-```
+```cpp
 #include <iostream>
-#include <string>
-#include <string.h>
-#include <iomanip>
-#include <algorithm>
-#include <cmath>
 using namespace std;
 
 
