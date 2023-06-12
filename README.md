@@ -95,7 +95,7 @@ int main()
             }
             else if(nextX - x > 0) //右
             {
-		ans[2]++;
+				ans[2]++;
                 dir = 3;
             }
         }
@@ -113,7 +113,7 @@ int main()
             }
             else if(nextX - x < 0) //左
             {
-		ans[2]++;
+				ans[2]++;
                 dir = 2;
             }
             else if(nextX - x > 0) //右
@@ -146,7 +146,7 @@ int main()
 有可能我們要看的範圍是超出陣列範圍的，因此要把看的界線強行更改到陣列範圍內<br>
 <img src="https://github.com/michael54856/APCS_11206/blob/main/image/grid_description2.png"/>
 
-```
+```cpp
 #include <iostream>
 using namespace std;
 
